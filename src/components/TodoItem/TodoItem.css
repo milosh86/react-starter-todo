@@ -1,0 +1,27 @@
+.todo-item {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 28px;
+    border-bottom: solid;
+    border-width: thin;
+}
+
+.toggle-item {
+    font-size: 22px;
+    /*border-bottom: solid;*/
+    /*border-width: thin;*/
+    background-color: rgba(13, 13, 13, 0.5);
+}
+
+.todo-item span {
+    vertical-align: middle;
+}
+
+.todo-item-text {
+    margin-left: 5px;
+}
+
+.todo-item-checkbox {
+    padding-bottom: 7px;
+}

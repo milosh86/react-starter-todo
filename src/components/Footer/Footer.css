@@ -1,0 +1,36 @@
+.todo-footer {
+    font-size: 20px;
+    padding: 10px;
+}
+.todo-footer-count {
+
+}
+
+.todo-footer-filters {
+    margin-left: 25px;
+    cursor: pointer;
+    border-left: solid;
+    border-right: solid;
+    border-width: thin;
+}
+
+.todo-footer-filter {
+    border-style: none;
+    border-width: thin;
+    border-radius: 4px;
+    padding: 2px;
+    border-color: #777;
+}
+
+.todo-footer-filters .selected {
+    border-style: solid;
+}
+
+.todo-footer-filters span {
+    margin-left: 15px;
+}
+
+.todo-footer .remove-completed {
+    cursor: pointer;
+    margin-left: 15px;
+}
