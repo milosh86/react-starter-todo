@@ -11,6 +11,16 @@ class ES6Sample extends Component {
     };
   }
 
+  static displayName = 'ES6Sample';
+  static propTypes = {
+    filterText: React.PropTypes.string
+  };
+  static defaultProps = {
+    filterText: 'value'
+  };
+
+ static someStaticMethod() {}
+  
   handleChange() {
     this.props.onUserInput(React.findDOMNode(this.refs.filterTextInput).value);
   }
@@ -26,13 +36,5 @@ class ES6Sample extends Component {
 
   }
 }
-
-ES6Sample.displayName = 'ES6Sample';
-ES6Sample.propTypes = {
-  filterText: React.PropTypes.string,
-  onUserInput: React.PropTypes.func
-};
-ES6Sample.defaultProps = {};
-ES6Sample.staticMethod = function () {};
 
 export default ES6Sample;
