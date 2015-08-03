@@ -1,6 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import TodoConstants from '../constants/TodoConstants.js';
 import Decorators from '../util/decorators.js';
+import fp from 'fp-es6';
 
 let _filters = {
   [TodoConstants.FILTER_TYPE_ALL]: item => item,
@@ -95,13 +96,7 @@ class TodoStore extends EventEmitter {
   }
 
   areAllCompleted() {
-    for (let todo of this._todos.values()) {
-      if (!todo.completed) {
-        return false;
-      }
-    }
-
-    return true;
+    return fp(this._todos).every(todo => todo.completed);
   }
 
   getAll() {

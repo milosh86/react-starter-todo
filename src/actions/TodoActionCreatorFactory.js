@@ -14,7 +14,7 @@ class TodoActionCreator {
       actionType: TodoConstants.TODO_CREATE,
       text
     });
-  },
+  }
 
   updateItem(id, text) {
     if (!id || !text) {
@@ -26,7 +26,7 @@ class TodoActionCreator {
       text,
       id
     });
-  },
+  }
 
   updateFilter(filterType) {
     if (!filterType) {
@@ -37,7 +37,7 @@ class TodoActionCreator {
       actionType: TodoConstants.TODO_SET_FILTER,
       filterType
     });
-  },
+  }
 
   toggleComplete(id) {
     if (!id) {
@@ -48,13 +48,13 @@ class TodoActionCreator {
       actionType: TodoConstants.TODO_TOGGLE_COMPLETED,
       id
     });
-  },
+  }
 
   toggleCompleteAll() {
     this._AppDispatcher.dispatch({
       actionType: TodoConstants.TODO_TOGGLE_COMPLETED_ALL
     });
-  },
+  }
 
   remove(id) {
     if (!id) {
@@ -65,7 +65,7 @@ class TodoActionCreator {
       actionType: TodoConstants.TODO_REMOVE,
       id
     });
-  },
+  }
 
   removeAllCompleted() {
     this._AppDispatcher.dispatch({
