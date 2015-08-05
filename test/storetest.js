@@ -1,3 +1,4 @@
+//use jest instead...
 import TodoStore from '../src/stores/TodoStore.js';
 import TodoActions from '../src/actions/TodoActions.js';
 
