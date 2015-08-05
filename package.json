@@ -36,7 +36,7 @@
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react",
       "<rootDir>/node_modules/react-tools",
-      "<rootDir>/node_modules/babel*"
+      "babel"
     ]
   }
 }
