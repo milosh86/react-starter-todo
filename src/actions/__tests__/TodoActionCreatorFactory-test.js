@@ -44,5 +44,7 @@ describe('TodoActionCreator', function () {
     expect(AppDispatcher.dispatch).not.toBeCalled();
 
   });
+
+  // same for other actions
   
 });
