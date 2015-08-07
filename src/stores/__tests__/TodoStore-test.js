@@ -1,13 +1,21 @@
 jest.dontMock('../TodoStore');
-jest.dontMock('../../constants/TodoConstants');
 jest.dontMock('../TodoStoreFactory');
+jest.dontMock('../../constants/TodoConstants');
 jest.dontMock('eventemitter3');
 jest.dontMock('fp-es6');
 
-beforeEach(function (){
+beforeEach(function () {
   this.addMatchers({
-    toBeFunction: function (){
-      return Object.prototype.toString.call(this.actual)==='[object Function]';
+    toBeFunction: function () {
+      return Object.prototype.toString.call(this.actual) === '[object Function]';
+    }
+  });
+});
+
+beforeEach(function () {
+  this.addMatchers({
+    toBeArray: function () {
+      return Object.prototype.toString.call(this.actual) === '[object Array]';
     }
   });
 });
@@ -23,7 +31,7 @@ describe('TodoStore', function() {
   	text: 'new todo'
   };
 
-	beforeEach(function() {
+	beforeEach(function () {
 		// recreate the store before every test so that we clear the state of the store entirely
 
 		// when requiring module in 'beforeEach' or in 'it', Jest returns fresh instance for each test.
@@ -32,10 +40,12 @@ describe('TodoStore', function() {
 		// if 'b' is loaded in 'describe' and 'a' in 'it', 'a' will be clean without changes from 'b';
 		// see require folder for example
 		AppDispatcher = require('../../dispatcher/AppDispatcher');
-		AppDispatcher.register.mockImplementation(function () {
-			return 'dispatcher_token';
-		});
-		
+		AppDispatcher.register.mockReturnValue('dispatcher_token');
+		// same as:
+		// AppDispatcher.register.mockImplementation(function () {
+		// 	return 'dispatcher_token';
+		// });
+		 
 		TodoStore = require('../TodoStore');
 	  callback = AppDispatcher.register.mock.calls[0][0];
 	  
@@ -50,5 +60,41 @@ describe('TodoStore', function() {
     expect(TodoStore.dispatchToken).toBe('dispatcher_token'); 
   });
 
+  it('should provide "getAll" method for getting all todo items from the store', function () {
+  	expect(TodoStore.getAll).toBeFunction();
+  	expect(TodoStore.getAll()).toBeArray();
+  });
+
+  it('initially has 3 dummy todo items', function () {
+  	var todos = TodoStore.getAll();
+  	expect(todos.length).toBe(3);
+  	expect(todos[0]).toEqual({
+  		id: 'TODO_0',
+  		text: 'Todo 1 from store',
+  		completed: false
+  	});
+  });
+
+  it('should be able to create and store new todo items', function () {
+  	callback(actionTodoCreate);
+
+  	var todos = TodoStore.getAll();
+
+  	expect(todos.length).toBe(4);
+  	expect(todos[3]).toEqual({
+  		id: 'TODO_3',
+  		text: 'new todo',
+  		completed: false
+  	});
+  });
+
+  it('should trigger change event when new item is created', function () {
+  	var subscriberMock = jest.genMockFn();
+
+  	TodoStore.addChangeListener(subscriberMock);
+  	callback(actionTodoCreate);
+
+  	expect(subscriberMock.mock.calls.length).toBe(1);
+  });
 
 });
