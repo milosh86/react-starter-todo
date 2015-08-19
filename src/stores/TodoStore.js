@@ -39,10 +39,10 @@ let dispatchToken = AppDispatcher.register(action => {
 
 export default {
   dispatchToken: dispatchToken,
-  addChangeListener: store.addChangeListener.bind(store),
-  removeChangeListener: store.removeChangeListener.bind(store),
-  getAll: store.getAllFiltered.bind(store),
-  areAllCompleted: store.areAllCompleted.bind(store),
-  getFilterType: store.getFilterType.bind(store),
-  getNumberOfActive: store.getNumberOfActive.bind(store)
+  addChangeListener: cb => store.addChangeListener(cb),
+  removeChangeListener: cb => store.removeChangeListener(cb),
+  getAll: () => store.getAllFiltered(),
+  areAllCompleted: () => store.areAllCompleted(),
+  getFilterType: () => store.getFilterType(),
+  getNumberOfActive: () => store.getNumberOfActive()
 };

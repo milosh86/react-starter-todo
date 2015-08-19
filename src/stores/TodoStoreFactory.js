@@ -34,6 +34,7 @@ class TodoStore extends EventEmitter {
     this.emitChange();
 
     return this;
+
   }
 
   update(id, updates) {
