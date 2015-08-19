@@ -26,22 +26,25 @@ class TodoStore extends EventEmitter {
   create(text) {
     let id = this._PREFIX + this._lastID++;
 
-    this._todos.set(id, {
+    this._todos = new Map(this._todos).set(id, {
       id,
       text,
       completed: false
     });
+
     this.emitChange();
 
     return this;
-
   }
 
   update(id, updates) {
     if (this._todos.has(id)) {
-      let todo = this._todos.get(id);
+      this._todos = fp(this._todos).map(todo => {
+        return todo.id === id ? 
+          Object.assign(todo, updates) :
+          todo;
+      }).value();
 
-      Object.assign(todo, updates);
       this.emitChange();
     }
 
@@ -49,35 +52,36 @@ class TodoStore extends EventEmitter {
   }
 
   updateAll(updates) {
-    this._todos.forEach(todo => Object.assign(todo, updates));
+    this._todos = fp(this._todos).map(todo => Object.assign(todo, updates)).value();
     this.emitChange();
 
     return this;
   }
 
   remove(id) {
-    this._todos.delete(id);
+    this._todos = fp(this._todos).filter(todo => todo.id !== id).value();
     this.emitChange();
 
     return this;
   }
 
   removeCompleted() {
-    this._todos.forEach((todo, id) => {
-      if (todo.completed) {
-        this.remove(id);
-      }
-    });
+    this._todos = fp(this._todos).filter(todo => !todo.completed).value();
     this.emitChange();
 
     return this;
   }
 
-  toggleCompleted(id) {
-    let todo = this._todos.get(id);
+  toggleCompleted(id) {  
+    if (this._todos.has(id)) {
+      this._todos = fp(this._todos).map(todo => {
+        return todo.id === id ? 
+          Object.assign(todo, {completed: !todo.completed}) :
+          todo;
+      }).value();
 
-    todo && (todo.completed = !todo.completed);
-    this.emitChange();
+      this.emitChange(); 
+    }
 
     return this;
   }
