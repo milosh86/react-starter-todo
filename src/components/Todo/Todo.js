@@ -7,14 +7,12 @@ import Footer from '../Footer/Footer.js';
 import TodoStore from '../../stores/TodoStore.js';
 import TodoActions from '../../actions/TodoActions.js';
 
-let getTodoState = () => {
-  return {
-    todos: TodoStore.getAll(),
-    areAllCompleted: TodoStore.areAllCompleted(),
-    filterType: TodoStore.getFilterType(),
-    numOfActive: TodoStore.getNumberOfActive()
-  };
-};
+let getTodoState = () => ({
+  todos: TodoStore.getAll(),
+  areAllCompleted: TodoStore.areAllCompleted(),// maybe shouldn't be in store, it's derived from todos
+  filterType: TodoStore.getFilterType(),
+  numOfActive: TodoStore.getNumberOfActive() // maybe shouldn't be in store, it's derived from todos
+});
 
 let Todo = React.createClass({
   // prop validation
@@ -32,6 +30,12 @@ let Todo = React.createClass({
     TodoStore.removeChangeListener(this.onChange);
   },
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // todos(Map) and filterType(string) are immutable, so we can easily detect change
+    return (nextState.todos !== this.state.todos) || 
+           (nextState.filterType !== this.state.filterType);
+  },
+
   onChange() {
     this.setState(getTodoState());
   },
@@ -41,12 +45,15 @@ let Todo = React.createClass({
   },
 
   render() {
+    let filteredTodos = Array.from(TodoStore.getAllFiltered(this.state.todos), item => item[1]);
+
+
     return (
       <div className="todo-app">
         <InputBox
           onEnter={this.onNewTodo}/>
         <TodoList
-          todoItems={this.state.todos}
+          todoItems={filteredTodos}
           toggleAllChecked={this.state.areAllCompleted}/>
         <Footer
           filterType={this.state.filterType}

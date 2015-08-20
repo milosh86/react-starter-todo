@@ -41,7 +41,8 @@ export default {
   dispatchToken: dispatchToken,
   addChangeListener: cb => store.addChangeListener(cb),
   removeChangeListener: cb => store.removeChangeListener(cb),
-  getAll: () => store.getAllFiltered(),
+  getAll: () => store.getAll(),
+  getAllFiltered: todos => store.getAllFiltered(todos),
   areAllCompleted: () => store.areAllCompleted(),
   getFilterType: () => store.getFilterType(),
   getNumberOfActive: () => store.getNumberOfActive()

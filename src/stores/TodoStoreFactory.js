@@ -40,9 +40,12 @@ class TodoStore extends EventEmitter {
   update(id, updates) {
     if (this._todos.has(id)) {
       this._todos = fp(this._todos).map(todo => {
-        return todo.id === id ? 
-          Object.assign(todo, updates) :
-          todo;
+        if (todo.id === id) {
+          updates = updates || {completed: !todo.completed};
+          return Object.assign(todo, updates);
+        } else {
+          return todo;
+        }      
       }).value();
 
       this.emitChange();
@@ -73,15 +76,7 @@ class TodoStore extends EventEmitter {
   }
 
   toggleCompleted(id) {  
-    if (this._todos.has(id)) {
-      this._todos = fp(this._todos).map(todo => {
-        return todo.id === id ? 
-          Object.assign(todo, {completed: !todo.completed}) :
-          todo;
-      }).value();
-
-      this.emitChange(); 
-    }
+    this.update(id);
 
     return this;
   }
@@ -105,15 +100,16 @@ class TodoStore extends EventEmitter {
   }
 
   getAll() {
-    return Array.from(this._todos, item => item[1])
+    //return Array.from(this._todos, item => item[1])
+    return this._todos;
   }
 
-  getAllFiltered() {
-    return this.getAll().filter(_filters[this._filterType]);
+  getAllFiltered(todos) {
+    return fp(todos).filter(_filters[this._filterType]).value();
   }
 
   getNumberOfActive() {
-    return this.getAll().reduce((acc, todo) => todo.completed ? acc : acc + 1, 0);
+    return fp(this._todos).reduce((acc, todo) => todo.completed ? acc : acc + 1, 0);
   }
 
   getFilterType() {
